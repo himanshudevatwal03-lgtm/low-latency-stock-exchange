@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: matching-engine-demo
+    runtime: docker
+    plan: free
+    healthCheckPath: /api/health

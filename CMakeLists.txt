@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.20)
 project(matching_engine CXX)
 
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+    set(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}/tests" CACHE PATH
+        "Install the Python extension beside the test suite by default" FORCE)
+endif()
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -18,6 +23,7 @@ endif()
 # ---------------------------------------------------------------------------
 add_library(engine STATIC src/engine.cpp)
 target_include_directories(engine PUBLIC include)
+set_target_properties(engine PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 # ---------------------------------------------------------------------------
 # Benchmark executable
@@ -43,7 +49,8 @@ pybind11_add_module(orderbook bindings/bindings.cpp)
 target_link_libraries(orderbook PRIVATE engine)
 
 # ---------------------------------------------------------------------------
-# Install the Python extension next to the tests directory so pytest can
-# find it without PYTHONPATH gymnastics.
+# Install the extension into a caller-selected prefix. For local tests, use
+# `cmake --install build --prefix "$PWD/app/native"`; Docker installs it into
+# `/opt/engine`.
 # ---------------------------------------------------------------------------
-install(TARGETS orderbook DESTINATION ${CMAKE_SOURCE_DIR}/tests)
+install(TARGETS orderbook LIBRARY DESTINATION . RUNTIME DESTINATION .)

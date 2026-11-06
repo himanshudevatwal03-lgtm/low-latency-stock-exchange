@@ -1,0 +1,9 @@
+.git
+.gitignore
+build
+.docker-config
+__pycache__
+.pytest_cache
+*.pyc
+*.pyd
+*.so
