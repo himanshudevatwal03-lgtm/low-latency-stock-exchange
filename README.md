@@ -95,7 +95,7 @@ python -m pytest tests -v
 
 ## Benchmark
 
-Build configuration uses `Release`/`-O3` (and `-march=native` on non-MSVC compilers). The benchmark uses a deterministic synthetic workload of one million operations by default: 60% passive limits, 20% aggressive IOC limits, 10% market orders, and 10% cancels. Pass a different operation count as the first argument, for example `./build/bench 1000000`.
+Build configuration uses `Release`/`-O3`. For local machine-specific measurements, configure with `-DMATCHING_ENGINE_NATIVE_ARCH=ON`; that option uses `-march=native` and may produce binaries that do not run on other CPU models. The benchmark uses a deterministic synthetic workload of one million operations by default: 60% passive limits, 20% aggressive IOC limits, 10% market orders, and 10% cancels. Pass a different operation count as the first argument, for example `./build/bench 1000000`.
 
 An earlier README snapshot reported 2.43 million operations/second and 300 ns p50 latency. The benchmark does not record the machine/compiler configuration, includes workload generation and per-operation clock reads, and notes roughly 10 ns of timing overhead. Treat that number as an unverified historical result, not a portable performance claim. Re-run the benchmark on the target machine and record its CPU, compiler, build flags, operation count, and results before quoting it in a résumé.
 

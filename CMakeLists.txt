@@ -8,6 +8,9 @@ endif()
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+option(MATCHING_ENGINE_NATIVE_ARCH
+    "Optimize for the build CPU; resulting binaries may not run on other CPUs"
+    OFF)
 
 # ---------------------------------------------------------------------------
 # Compiler flags
@@ -15,7 +18,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 if(MSVC)
     add_compile_options(/W4 /O2)
 else()
-    add_compile_options(-Wall -Wextra -O3 -march=native)
+    add_compile_options(-Wall -Wextra -O3)
+    if(MATCHING_ENGINE_NATIVE_ARCH)
+        add_compile_options(-march=native)
+    endif()
 endif()
 
 # ---------------------------------------------------------------------------
